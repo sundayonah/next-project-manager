@@ -56,7 +56,11 @@ const Modal: React.FC<ModalProps> = ({
    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (validateForm()) {
-         onSubmit(formData);
+         const updatedData = {
+            ...project, // Keep the existing data
+            ...formData, // Overwrite only the fields that are changed
+         };
+         onSubmit(updatedData); // Submit the combined result
          onClose();
       }
    };
@@ -103,6 +107,7 @@ const Modal: React.FC<ModalProps> = ({
                      id="imageUrl"
                      name="imageUrl"
                      value={formData.imageUrl}
+                     alt="Image url"
                      onChange={handleChange}
                      className={`border p-2 w-full bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100 ${
                         errors.imageUrl

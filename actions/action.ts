@@ -56,7 +56,7 @@
 //    return uuid.v4().toString();
 // }
 
-import { projectSchema } from '@/app/lib/zodValidation';
+// import { projectSchema } from '@/app/lib/zodValidation';
 import { revalidatePath } from 'next/cache';
 // import { z } from 'zod';
 
@@ -102,7 +102,7 @@ export async function createProject(data: FormData) {
             throw new Error(responseText);
          }
       }
-      revalidatePath('/');
+      // revalidatePath('/');
 
       // If it's OK, return the parsed JSON
       return JSON.parse(responseText);
@@ -137,16 +137,10 @@ export async function getProjectById(id: string) {
 
 // Update Project by ID
 export async function updateProject(id: string, data: FormData) {
-   const formData = Object.fromEntries(data.entries());
-
    try {
-      await projectSchema.parse(formData);
       const response = await fetch(`${BASE_URL}/${id}`, {
          method: 'PUT',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(formData),
+         body: data, // Send FormData directly without JSON.stringify
       });
 
       if (!response.ok) {

@@ -39,31 +39,52 @@ const Projects = ({ projects }: { projects: ProjectType[] }) => {
    };
 
    // const handleUpdateProject = async (data: ProjectData) => {
-
-   //    console.log(selectedProject, 'selectedProject');
    //    if (!selectedProject) {
    //       throw new Error('No project selected for update');
    //    }
 
    //    try {
-   //       // Convert FormData to ProjectData
+   //       // Create a new FormData object for updated fields only
    //       const formData = new FormData();
-   //       for (const [key, value] of Object.entries(data)) {
-   //          formData.append(key, value);
+
+   //       // Check and append fields only if they exist and are different from the current values
+   //       if (data.name && data.name !== selectedProject.name) {
+   //          formData.append('name', data.name);
+   //       }
+   //       if (data.imageUrl && data.imageUrl !== selectedProject.imageUrl) {
+   //          formData.append('imageUrl', data.imageUrl);
+   //       }
+   //       if (data.link && data.link !== selectedProject.link) {
+   //          formData.append('link', data.link);
+   //       }
+   //       if (
+   //          data.description &&
+   //          data.description !== selectedProject.description
+   //       ) {
+   //          formData.append('description', data.description);
    //       }
 
-   //       // Update the project in the backend
-   //       const updatedProject = await updateProject(
-   //          selectedProject.id,
-   //          formData
-   //       );
+   //       // Only proceed with update if there's data to update
+   //       if (
+   //          formData.has('name') ||
+   //          formData.has('imageUrl') ||
+   //          formData.has('link') ||
+   //          formData.has('description')
+   //       ) {
+   //          const updatedProject = await updateProject(
+   //             selectedProject.id,
+   //             formData
+   //          );
 
-   //       // Update the UI with the new project data
-   //       setProjectList((prev) =>
-   //          prev.map((project) =>
-   //             project.id === selectedProject.id ? updatedProject : project
-   //          )
-   //       );
+   //          // Update the project in the UI
+   //          setProjectList((prev) =>
+   //             prev.map((project) =>
+   //                project.id === selectedProject.id ? updatedProject : project
+   //             )
+   //          );
+   //       } else {
+   //          console.log('No fields were changed.');
+   //       }
    //    } catch (error) {
    //       console.error('Failed to update project:', error);
    //    }
@@ -78,7 +99,7 @@ const Projects = ({ projects }: { projects: ProjectType[] }) => {
          // Create a new FormData object for updated fields only
          const formData = new FormData();
 
-         // Check and append fields only if they exist and are different from the current values
+         // Append only updated fields
          if (data.name && data.name !== selectedProject.name) {
             formData.append('name', data.name);
          }
@@ -95,7 +116,12 @@ const Projects = ({ projects }: { projects: ProjectType[] }) => {
             formData.append('description', data.description);
          }
 
-         // Only proceed with update if there's data to update
+         // Debug log formData before sending
+         for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+         }
+
+         // Proceed only if there are fields to update
          if (
             formData.has('name') ||
             formData.has('imageUrl') ||
@@ -151,20 +177,22 @@ const Projects = ({ projects }: { projects: ProjectType[] }) => {
                               {p.name}
                            </p>
                            <p className="text-[#9898a0] transition-colors duration-300 group-hover:text-[#555] dark:group-hover:text-[#bbbbbb]">
-                              {p.description}
+                              {p.description.length > 100
+                                 ? `${p.description.slice(0, 150)}...`
+                                 : p.description}
                            </p>
                         </div>
                      </Link>
                      <div className="mt-2 flex justify-between">
                         <button
                            onClick={() => handleEditClick(p)}
-                           className="text-blue-600 hover:underline"
+                           className="text-blue-600 hover:underline border border-blue-600 p-1 rounded-md"
                         >
                            Edit
                         </button>
                         <button
                            onClick={() => handleDelete(p.id)}
-                           className="text-red-600 hover:underline"
+                           className="text-red-600 hover:underline border border-red-600 p-1 rounded-md"
                         >
                            Delete
                         </button>
