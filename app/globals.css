@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+   @apply bg-[#fafafa] text-black;
+}
+
+.dark body {
+   @apply bg-black text-white;
+}
+
+@layer base {
+   :root {
+      --radius: 0.5rem;
+   }
+}
+
+/* @keyframes stripes {
+   0% {
+      left: -100%;
+   }
+   100% {
+      left: 100%;
+   }
+}
+
+.animate-stripes {
+   animation: stripes 3.5s linear infinite;
+} */
