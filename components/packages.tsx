@@ -4,7 +4,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { packageSchema } from '@/app/lib/zodValidation'; // Update the path if needed
-import { createPackage } from '@/actions/action'; // Assuming you have this action
+import { createPackage } from '@/actions/actions'; // Assuming you have this action
 import { z } from 'zod';
 
 const CreatePackageForm: React.FC = () => {
@@ -19,18 +19,17 @@ const CreatePackageForm: React.FC = () => {
    const onSubmit = async (data: z.infer<typeof packageSchema>) => {
       console.log(data);
       try {
-         const formData = new FormData();
-         formData.append('name', data.name);
-         formData.append('link', data.link || '');
-         formData.append('description', data.description || '');
+         // Prepare a plain object instead of FormData
+         const packageData = {
+            name: data.name,
+            link: data.link || '',
+            description: data.description || '',
+         };
 
-         // Log formData contents
-         for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-         }
+         console.log('Project data to send:', packageData);
 
          // console.log(formData, 'form data');
-         await createPackage(formData);
+         await createPackage(packageData);
          console.log('Project created successfully!'); // Log success
       } catch (error) {
          console.error('Error submitting form:', error);

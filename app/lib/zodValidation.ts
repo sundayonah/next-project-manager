@@ -12,7 +12,7 @@ export const projectSchema = z.object({
 export const packageSchema = z.object({
    id: z.string().optional(),
    name: z.string().min(1, 'Name is required'),
-   description: z.string().optional(),
    link: z.string().url('Invalid URL').optional(),
+   description: z.string().optional(),
 });
 

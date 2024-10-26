@@ -1,14 +1,7 @@
-import { ProjectData, ProjectType } from '@/app/types/types';
+import { ProjectModalProps } from '@/app/types/types';
 import React, { useEffect, useState } from 'react';
 
-interface ModalProps {
-   isOpen: boolean;
-   onClose: () => void;
-   onSubmit: (data: ProjectData) => Promise<void>;
-   project: ProjectType;
-}
-
-const Modal: React.FC<ModalProps> = ({
+const ProjectModal: React.FC<ProjectModalProps> = ({
    isOpen,
    onClose,
    onSubmit,
@@ -185,4 +178,4 @@ const Modal: React.FC<ModalProps> = ({
    ) : null; // Render null if the modal is not open
 };
 
-export default Modal;
+export default ProjectModal;
