@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { packageSchema } from '@/app/lib/zodValidation'; // Update the path if needed
@@ -8,13 +8,36 @@ import { createPackage } from '@/actions/actions'; // Assuming you have this act
 import { z } from 'zod';
 
 const CreatePackageForm: React.FC = () => {
+   const [stacks, setStacks] = useState<string[]>([]);
+   const [stackInput, setStackInput] = useState<string>('');
    const {
       register,
       handleSubmit,
       formState: { errors, isSubmitting },
+      setValue,
    } = useForm<z.infer<typeof packageSchema>>({
       resolver: zodResolver(packageSchema),
    });
+
+   // const handleAddStack = () => {
+   //    if (stackInput.trim() && !stacks.includes(stackInput)) {
+   //       setStacks([...stacks, stackInput]);
+   //       setStackInput('');
+   //    }
+   // };
+
+   const handleAddStack = () => {
+      if (stackInput.trim() && !stacks.includes(stackInput)) {
+         const newStacks = [...stacks, stackInput];
+         setStacks(newStacks);
+         setValue('stacks', newStacks); // Update the hidden input value
+         setStackInput('');
+      }
+   };
+
+   const handleRemoveStack = (stackToRemove: string) => {
+      setStacks(stacks.filter((stack) => stack !== stackToRemove));
+   };
 
    const onSubmit = async (data: z.infer<typeof packageSchema>) => {
       console.log(data);
@@ -24,6 +47,7 @@ const CreatePackageForm: React.FC = () => {
             name: data.name,
             link: data.link || '',
             description: data.description || '',
+            stacks: data.stacks || '',
          };
 
          console.log('Project data to send:', packageData);
@@ -107,6 +131,45 @@ const CreatePackageForm: React.FC = () => {
                            {errors.description.message}
                         </span>
                      )}
+                  </div>
+
+                  <div>
+                     <label
+                        htmlFor="stacks"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                     >
+                        Tech Stacks:
+                     </label>
+                     <div className="flex space-x-2">
+                        <input
+                           type="text"
+                           id="stacks"
+                           value={stackInput}
+                           onChange={(e) => setStackInput(e.target.value)}
+                           placeholder="Add a stack"
+                           className="w-full px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button
+                           type="button"
+                           onClick={handleAddStack}
+                           className="bg-blue-500 text-white px-3 py-2 rounded-r-md"
+                        >
+                           Add
+                        </button>
+                     </div>
+                     <input type="hidden" {...register('stacks')} />
+
+                     <div className="mt-2 flex flex-wrap">
+                        {stacks.map((stack) => (
+                           <span
+                              key={stack}
+                              className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full m-1 cursor-pointer"
+                              onClick={() => handleRemoveStack(stack)}
+                           >
+                              {stack} &times;
+                           </span>
+                        ))}
+                     </div>
                   </div>
 
                   <button

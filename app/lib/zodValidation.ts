@@ -7,6 +7,7 @@ export const projectSchema = z.object({
    imageUrl: z.string().optional(),
    link: z.string().url('Invalid URL').optional(),
    description: z.string().optional(),
+   stacks: z.array(z.string().min(1, { message: "Stack name cannot be empty" })).min(1, { message: "At least one stack is required" }),
 });
 
 export const packageSchema = z.object({
@@ -14,5 +15,6 @@ export const packageSchema = z.object({
    name: z.string().min(1, 'Name is required'),
    link: z.string().url('Invalid URL').optional(),
    description: z.string().optional(),
+   stacks: z.array(z.string().min(1, { message: "Stack name cannot be empty" })).min(1, { message: "At least one stack is required" }),
 });
 

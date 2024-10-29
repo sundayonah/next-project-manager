@@ -1,4 +1,4 @@
-import { projectSchema } from '@/app/lib/zodValidation';
+import { packageSchema, projectSchema } from '@/app/lib/zodValidation';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 // import { z } from 'zod';
@@ -10,6 +10,7 @@ const PROJECT_BASE_URL = "https://project-manager-server-side-production.up.rail
 const PACKAGES_BASE_URL = "https://project-manager-server-side-production.up.railway.app/api/packages"
 
 export async function createProject(data: z.infer<typeof projectSchema>) {
+   console.log(data, "data in action")
    try {
       const response = await fetch(`${PROJECT_BASE_URL}/new`, {
          method: 'POST',
@@ -21,7 +22,7 @@ export async function createProject(data: z.infer<typeof projectSchema>) {
       });
 
       const responseText = await response.text();
-      console.log(responseText, 'Full response text');
+      // console.log(responseText, 'Full response text');
 
       if (!response.ok) {
          try {
@@ -62,11 +63,11 @@ export async function getProjectById(id: string) {
    return await response.json();
 }
 // Update Project by ID
-export async function updateProject(id: string, data: FormData) {
+export async function updateProject(id: string, data: z.infer<typeof projectSchema>) {
    try {
       const response = await fetch(`${PROJECT_BASE_URL}/${id}`, {
          method: 'PUT',
-         body: data, // Send FormData directly without JSON.stringify
+         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
@@ -152,11 +153,11 @@ export async function getPackageById(id: string) {
 }
 
 // Update Project by ID
-export async function updatePackage(id: string, data: FormData) {
+export async function updatePackage(id: string, data: z.infer<typeof packageSchema>) {
    try {
       const response = await fetch(`${PACKAGES_BASE_URL}/${id}`, {
          method: 'PUT',
-         body: data, // Send FormData directly without JSON.stringify
+         body: JSON.stringify(data),
       });
 
       if (!response.ok) {

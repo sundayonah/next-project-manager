@@ -13,13 +13,14 @@ import {
 import ProjectModal from '../modals/projectModal';
 
 import {
-   PackageData,
    PackageType,
    ProjectData,
    ProjectsPackagesProps,
    ProjectType,
 } from '@/app/types/types';
 import PackageModal from '../modals/packageModal';
+import { packageSchema } from '@/app/lib/zodValidation';
+import { z } from 'zod';
 
 const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
    const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
@@ -35,7 +36,7 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
       null
    );
 
-   console.log(packages, 'packages');
+   // console.log(packages, 'packages');
 
    const handleProjectDelete = async (id: string) => {
       const confirmed = confirm(
@@ -69,46 +70,27 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
       }
 
       try {
-         const formData = new FormData();
-         // Append updated fields
-         if (data.name && data.name !== selectedProject.name) {
-            formData.append('name', data.name);
-         }
-         if (data.imageUrl && data.imageUrl !== selectedProject.imageUrl) {
-            formData.append('imageUrl', data.imageUrl);
-         }
-         if (data.link && data.link !== selectedProject.link) {
-            formData.append('link', data.link);
-         }
-         if (
-            data.description &&
-            data.description !== selectedProject.description
-         ) {
-            formData.append('description', data.description);
-         }
+         const projectData = {
+            name: data.name,
+            link: data.link || '',
+            imageUrl: data.imageUrl || '',
+            description: data.description || '',
+            stacks: data.stacks || '',
+         };
 
-         if (
-            formData.has('name') ||
-            formData.has('imageUrl') ||
-            formData.has('link') ||
-            formData.has('description')
-         ) {
-            const updatedProject = await updateProject(
-               selectedProject.id,
-               formData
-            );
+         const updatedProject = await updateProject(
+            selectedProject.id,
+            projectData
+         );
 
-            // Immediately update the project list
-            setProjectList((prev) =>
-               prev.map((project) =>
-                  project.id === selectedProject.id ? updatedProject : project
-               )
-            );
-            // Optionally close the modal after successful update
-            setIsProjectModalOpen(false);
-         } else {
-            console.log('No fields were changed.');
-         }
+         // Immediately update the project list
+         setProjectList((prev) =>
+            prev.map((project) =>
+               project.id === selectedProject.id ? updatedProject : project
+            )
+         );
+         // Optionally close the modal after successful update
+         setIsProjectModalOpen(false);
       } catch (error) {
          console.error('Failed to update project:', error);
       }
@@ -142,51 +124,35 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
       }
    };
 
-   const handleUpdatePackge = async (data: PackageData) => {
+   const handleUpdatePackge = async (data: z.infer<typeof packageSchema>) => {
       if (!selectedPackage) {
          throw new Error('No package selected for update');
       }
 
       try {
-         const formData = new FormData();
-         // Append updated fields
-         if (data.name && data.name !== selectedPackage.name) {
-            formData.append('name', data.name);
-         }
+         // Prepare a plain object instead of FormData
+         const packageData = {
+            name: data.name,
+            link: data.link || '',
+            description: data.description || '',
+            stacks: data.stacks || '',
+         };
 
-         if (data.link && data.link !== selectedPackage.link) {
-            formData.append('link', data.link);
-         }
-         if (
-            data.description &&
-            data.description !== selectedPackage.description
-         ) {
-            formData.append('description', data.description);
-         }
+         const updatedPackage = await updatePackage(
+            selectedPackage.id,
+            packageData
+         );
 
-         if (
-            formData.has('name') ||
-            formData.has('link') ||
-            formData.has('description')
-         ) {
-            const updatedPackage = await updatePackage(
-               selectedPackage.id,
-               formData
-            );
-
-            // Immediately update the package list
-            setPackageList((prev) =>
-               prev.map((npmPackage) =>
-                  npmPackage.id === selectedPackage.id
-                     ? updatedPackage
-                     : npmPackage
-               )
-            );
-            // Optionally close the modal after successful update
-            setIsPackageModalOpen(false);
-         } else {
-            console.log('No fields were changed.');
-         }
+         // Immediately update the package list
+         setPackageList((prev) =>
+            prev.map((npmPackage) =>
+               npmPackage.id === selectedPackage.id
+                  ? updatedPackage
+                  : npmPackage
+            )
+         );
+         // Optionally close the modal after successful update
+         setIsPackageModalOpen(false);
       } catch (error) {
          console.error('Failed to update npm - package:', error);
       }
