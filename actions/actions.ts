@@ -3,14 +3,19 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 // import { z } from 'zod';
 
-// const PROJECT_BASE_URL = 'http://localhost:8080/api/projects';
-// const PROJECT_BASE_URL = 'https://279d-98-97-79-15.ngrok-free.app/api/projects';
+const PROJECT_BASE_URL = process.env.NEXT_PUBLIC_PROJECT_BASE_URL
+const PACKAGES_BASE_URL = process.env.NEXT_PUBLIC_PACKAGES_BASE_URL as string;
 
-const PROJECT_BASE_URL = "https://project-manager-server-side-production.up.railway.app/api/projects"
-const PACKAGES_BASE_URL = "https://project-manager-server-side-production.up.railway.app/api/packages"
+if (!PROJECT_BASE_URL) {
+   throw new Error('PROJECT_BASE_URL is not defined');
+}
+
+if (!PACKAGES_BASE_URL) {
+   throw new Error('PACKAGES_BASE_URL is not defined');
+}
+
 
 export async function createProject(data: z.infer<typeof projectSchema>) {
-   console.log(data, "data in action")
    try {
       const response = await fetch(`${PROJECT_BASE_URL}/new`, {
          method: 'POST',
@@ -22,7 +27,6 @@ export async function createProject(data: z.infer<typeof projectSchema>) {
       });
 
       const responseText = await response.text();
-      // console.log(responseText, 'Full response text');
 
       if (!response.ok) {
          try {
@@ -95,8 +99,7 @@ export async function deleteProject(id: string) {
 
 //////////////////////////////PACKAGES///////////////////////////////////////
 
-export async function createPackage(data: z.infer<typeof projectSchema>) {
-   console.log(data)
+export async function createPackage(data: z.infer<typeof packageSchema>) {
    try {
       const response = await fetch(`${PACKAGES_BASE_URL}/new`, {
          method: 'POST',
@@ -108,7 +111,6 @@ export async function createPackage(data: z.infer<typeof projectSchema>) {
       });
 
       const responseText = await response.text();
-      console.log(responseText, 'Full response text');
 
       if (!response.ok) {
          try {
@@ -129,7 +131,7 @@ export async function createPackage(data: z.infer<typeof projectSchema>) {
 }
 
 
-// Get All Projects
+// Get All Packages
 export async function getPackages() {
    const response = await fetch(PACKAGES_BASE_URL);
 

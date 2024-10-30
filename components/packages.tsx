@@ -40,7 +40,6 @@ const CreatePackageForm: React.FC = () => {
    };
 
    const onSubmit = async (data: z.infer<typeof packageSchema>) => {
-      console.log(data);
       try {
          // Prepare a plain object instead of FormData
          const packageData = {
@@ -49,8 +48,6 @@ const CreatePackageForm: React.FC = () => {
             description: data.description || '',
             stacks: data.stacks || '',
          };
-
-         console.log('Project data to send:', packageData);
 
          // console.log(formData, 'form data');
          await createPackage(packageData);

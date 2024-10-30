@@ -229,7 +229,7 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
                               </p>
                               <p className="text-[#9898a0] transition-colors duration-300 group-hover:text-[#555] dark:group-hover:text-[#bbbbbb]">
                                  {p.description && p.description.length > 100
-                                    ? `${p.description.slice(0, 150)}...`
+                                    ? `${p.description.slice(0, 100)}...`
                                     : p.description ||
                                       'No description available'}
                               </p>
