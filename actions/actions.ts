@@ -14,7 +14,6 @@ if (!PACKAGES_BASE_URL) {
    throw new Error('PACKAGES_BASE_URL is not defined');
 }
 
-
 export async function createProject(data: z.infer<typeof projectSchema>) {
    try {
       const response = await fetch(`${PROJECT_BASE_URL}/new`, {
@@ -45,7 +44,6 @@ export async function createProject(data: z.infer<typeof projectSchema>) {
    }
 }
 
-
 export async function getProjects() {
    const response = await fetch(`${PROJECT_BASE_URL}`);
 
@@ -56,6 +54,7 @@ export async function getProjects() {
 
    return await response.json();
 }
+
 // Get Project by ID
 export async function getProjectById(id: string) {
    const response = await fetch(`${PROJECT_BASE_URL}/${id}`);

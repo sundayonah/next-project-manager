@@ -7,6 +7,7 @@ export interface ProjectType {
    imageUrl: string;
    link: string;
    description: string;
+   stacks: string[];
 };
 
 export type ProjectData = z.infer<typeof projectSchema>;
@@ -17,6 +18,7 @@ export interface PackageType {
    name: string;
    link: string;
    description: string;
+   stacks: string[];
 }
 
 export type PackageData = z.infer<typeof packageSchema>;

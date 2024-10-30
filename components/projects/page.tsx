@@ -212,7 +212,7 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
                ))}
             </div>
 
-            <div className="w-full border border-b-gray-900 my-8" />
+            <div className="w-full border border-b-[#27272a] my-8" />
             {/* <p className='w-full'>{ `//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////`}</p> */}
 
             <div className="mt-4">
@@ -235,6 +235,27 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
                               </p>
                            </div>
                         </Link>
+                        {/* display the stacks */}
+                        <div className="my-4">
+                           {p.stacks.length > 0 ? (
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                 Stacks:{' '}
+                                 {p.stacks.map((s, index) => (
+                                    <span
+                                       key={index}
+                                       className="bg-blue-100 text-blue-800 text-xs font-medium mr-1 px-2.5 py-0.5 rounded"
+                                    >
+                                       {s}
+                                    </span>
+                                 ))}
+                              </p>
+                           ) : (
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                 No stacks available
+                              </p>
+                           )}
+                        </div>
+
                         <div className="mt-4 flex justify-between">
                            <button
                               onClick={() => handlePackageEditClick(p)}
