@@ -173,43 +173,48 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
                My Projects
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               {projectList.map((p) => (
-                  <div key={p.id} className="mb-6 group">
-                     <Link href={p.link || '#'} className="block">
-                        <div className="rounded-lg space-y-6 transition-transform duration-300 group-hover:scale-[1.02]">
-                           <Image
-                              src={p.imageUrl}
-                              alt={p.name}
-                              width={800}
-                              height={100}
-                              className="w-full h-60 object-cover transition-transform duration-300 group-hover:scale-101"
-                           />
-                           <p className="text-[#27272a] dark:text-[#d6d6d9] text-2xl font-bold mt-3 transition-colors duration-300 group-hover:text-[#046af8]">
-                              {p.name}
-                           </p>
-                           <p className="text-[#9898a0] transition-colors duration-300 group-hover:text-[#555] dark:group-hover:text-[#bbbbbb]">
-                              {p.description && p.description.length > 100
-                                 ? `${p.description.slice(0, 150)}...`
-                                 : p.description || 'No description available'}
-                           </p>
+               {!projectList || projectList.length == 0 ? (
+                  <p>No Projects Available.</p>
+               ) : (
+                  projectList.map((p) => (
+                     <div key={p.id} className="mb-6 group">
+                        <Link href={p.link || '#'} className="block">
+                           <div className="rounded-lg space-y-6 transition-transform duration-300 group-hover:scale-[1.02]">
+                              <Image
+                                 src={p.imageUrl}
+                                 alt={p.name}
+                                 width={800}
+                                 height={100}
+                                 className="w-full h-60 object-cover transition-transform duration-300 group-hover:scale-101"
+                              />
+                              <p className="text-[#27272a] dark:text-[#d6d6d9] text-2xl font-bold mt-3 transition-colors duration-300 group-hover:text-[#046af8]">
+                                 {p.name}
+                              </p>
+                              <p className="text-[#9898a0] transition-colors duration-300 group-hover:text-[#555] dark:group-hover:text-[#bbbbbb]">
+                                 {p.description && p.description.length > 100
+                                    ? `${p.description.slice(0, 150)}...`
+                                    : p.description ||
+                                      'No description available'}
+                              </p>
+                           </div>
+                        </Link>
+                        <div className="mt-4 flex justify-between">
+                           <button
+                              onClick={() => handleProjectEditClick(p)}
+                              className="text-blue-600 hover:underline border border-blue-600 p-1 px-8 rounded-md"
+                           >
+                              Edit
+                           </button>
+                           <button
+                              onClick={() => handleProjectDelete(p.id)}
+                              className="text-red-600 hover:underline border border-red-600 p-1 px-8 rounded-md"
+                           >
+                              Delete
+                           </button>
                         </div>
-                     </Link>
-                     <div className="mt-4 flex justify-between">
-                        <button
-                           onClick={() => handleProjectEditClick(p)}
-                           className="text-blue-600 hover:underline border border-blue-600 p-1 px-8 rounded-md"
-                        >
-                           Edit
-                        </button>
-                        <button
-                           onClick={() => handleProjectDelete(p.id)}
-                           className="text-red-600 hover:underline border border-red-600 p-1 px-8 rounded-md"
-                        >
-                           Delete
-                        </button>
                      </div>
-                  </div>
-               ))}
+                  ))
+               )}
             </div>
 
             <div className="w-full border border-b-[#27272a] my-8" />
@@ -220,58 +225,62 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
                   NPM Packages
                </h2>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {packageList.map((p) => (
-                     <div key={p.id} className="mb-6 group">
-                        <Link href={p.link || '#'} className="block">
-                           <div className="rounded-lg space-y-6 transition-transform duration-300 group-hover:scale-[1.02]">
-                              <p className="text-[#27272a] dark:text-[#d6d6d9] text-2xl font-bold mt-3 transition-colors duration-300 group-hover:text-[#046af8]">
-                                 {p.name}
-                              </p>
-                              <p className="text-[#9898a0] transition-colors duration-300 group-hover:text-[#555] dark:group-hover:text-[#bbbbbb]">
-                                 {p.description && p.description.length > 100
-                                    ? `${p.description.slice(0, 100)}...`
-                                    : p.description ||
-                                      'No description available'}
-                              </p>
+                  {!packageList || packageList.length == 0 ? (
+                     <p>No NPM Packages Available.</p>
+                  ) : (
+                     packageList.map((p) => (
+                        <div key={p.id} className="mb-6 group">
+                           <Link href={p.link || '#'} className="block">
+                              <div className="rounded-lg space-y-6 transition-transform duration-300 group-hover:scale-[1.02]">
+                                 <p className="text-[#27272a] dark:text-[#d6d6d9] text-2xl font-bold mt-3 transition-colors duration-300 group-hover:text-[#046af8]">
+                                    {p.name}
+                                 </p>
+                                 <p className="text-[#9898a0] transition-colors duration-300 group-hover:text-[#555] dark:group-hover:text-[#bbbbbb]">
+                                    {p.description && p.description.length > 100
+                                       ? `${p.description.slice(0, 100)}...`
+                                       : p.description ||
+                                         'No description available'}
+                                 </p>
+                              </div>
+                           </Link>
+                           {/* display the stacks */}
+                           <div className="my-4">
+                              {p.stacks.length > 0 ? (
+                                 <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    Stacks:{' '}
+                                    {p.stacks.map((s, index) => (
+                                       <span
+                                          key={index}
+                                          className="bg-blue-100 text-blue-800 text-xs font-medium mr-1 px-2.5 py-0.5 rounded"
+                                       >
+                                          {s}
+                                       </span>
+                                    ))}
+                                 </p>
+                              ) : (
+                                 <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    No stacks available
+                                 </p>
+                              )}
                            </div>
-                        </Link>
-                        {/* display the stacks */}
-                        <div className="my-4">
-                           {p.stacks.length > 0 ? (
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
-                                 Stacks:{' '}
-                                 {p.stacks.map((s, index) => (
-                                    <span
-                                       key={index}
-                                       className="bg-blue-100 text-blue-800 text-xs font-medium mr-1 px-2.5 py-0.5 rounded"
-                                    >
-                                       {s}
-                                    </span>
-                                 ))}
-                              </p>
-                           ) : (
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
-                                 No stacks available
-                              </p>
-                           )}
-                        </div>
 
-                        <div className="mt-4 flex justify-between">
-                           <button
-                              onClick={() => handlePackageEditClick(p)}
-                              className="text-blue-600 hover:underline border border-blue-600 p-1 px-8 rounded-md"
-                           >
-                              Edit
-                           </button>
-                           <button
-                              onClick={() => handlePackageDelete(p.id)}
-                              className="text-red-600 hover:underline border border-red-600 p-1 px-8 rounded-md"
-                           >
-                              Delete
-                           </button>
+                           <div className="mt-4 flex justify-between">
+                              <button
+                                 onClick={() => handlePackageEditClick(p)}
+                                 className="text-blue-600 hover:underline border border-blue-600 p-1 px-8 rounded-md"
+                              >
+                                 Edit
+                              </button>
+                              <button
+                                 onClick={() => handlePackageDelete(p.id)}
+                                 className="text-red-600 hover:underline border border-red-600 p-1 px-8 rounded-md"
+                              >
+                                 Delete
+                              </button>
+                           </div>
                         </div>
-                     </div>
-                  ))}
+                     ))
+                  )}
                </div>
             </div>
          </div>
