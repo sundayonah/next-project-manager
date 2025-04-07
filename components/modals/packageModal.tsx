@@ -9,18 +9,18 @@ const PackageModal: React.FC<PackageModalProps> = ({
 }) => {
    // Hooks are called unconditionally, regardless of the modal's open state
    const [formData, setFormData] = useState({
-      name: npmPackage.name,
-      link: npmPackage.link,
-      description: npmPackage.description,
+      name: npmPackage.package_data.name,
+      link: npmPackage.package_data.link,
+      description: npmPackage.package_data.description,
    });
    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
    // Update formData when the selected npmPackage changes
    useEffect(() => {
       setFormData({
-         name: npmPackage.name,
-         link: npmPackage.link,
-         description: npmPackage.description,
+         name: npmPackage.package_data.name,
+         link: npmPackage.package_data.link,
+         description: npmPackage.package_data.description,
       });
    }, [npmPackage]);
 
@@ -47,6 +47,7 @@ const PackageModal: React.FC<PackageModalProps> = ({
          const updatedData = {
             ...npmPackage,
             ...formData,
+            stacks: npmPackage.package_data.stacks,
          };
          onSubmit(updatedData);
          onClose();
@@ -73,11 +74,10 @@ const PackageModal: React.FC<PackageModalProps> = ({
                      name="name"
                      value={formData.name}
                      onChange={handleChange}
-                     className={`border p-2 w-full bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100 ${
-                        errors.name
-                           ? 'border-red-500'
-                           : 'border-gray-300 dark:border-gray-600'
-                     }`}
+                     className={`border p-2 w-full bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100 ${errors.name
+                        ? 'border-red-500'
+                        : 'border-gray-300 dark:border-gray-600'
+                        }`}
                   />
                   {errors.name && (
                      <p className="text-red-500 text-sm">{errors.name}</p>
@@ -97,11 +97,10 @@ const PackageModal: React.FC<PackageModalProps> = ({
                      name="link"
                      value={formData.link}
                      onChange={handleChange}
-                     className={`border p-2 w-full bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100 ${
-                        errors.link
-                           ? 'border-red-500'
-                           : 'border-gray-300 dark:border-gray-600'
-                     }`}
+                     className={`border p-2 w-full bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100 ${errors.link
+                        ? 'border-red-500'
+                        : 'border-gray-300 dark:border-gray-600'
+                        }`}
                   />
                   {errors.link && (
                      <p className="text-red-500 text-sm">{errors.link}</p>
@@ -119,11 +118,10 @@ const PackageModal: React.FC<PackageModalProps> = ({
                      name="description"
                      value={formData.description}
                      onChange={handleChange}
-                     className={`border p-2 w-full bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100 ${
-                        errors.description
-                           ? 'border-red-500'
-                           : 'border-gray-300 dark:border-gray-600'
-                     }`}
+                     className={`border p-2 w-full bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100 ${errors.description
+                        ? 'border-red-500'
+                        : 'border-gray-300 dark:border-gray-600'
+                        }`}
                   />
                   {errors.description && (
                      <p className="text-red-500 text-sm">
