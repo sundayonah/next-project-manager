@@ -15,10 +15,14 @@ export type ProjectData = z.infer<typeof projectSchema>;
 
 export interface PackageType {
    id: string;
-   name: string;
-   link: string;
-   description: string;
-   stacks: string[];
+   package_data: {
+      name: string;
+      link: string;
+      description: string;
+      stacks: string[];
+   };
+   created_at: string;
+   updated_at: string;
 }
 
 export type PackageData = z.infer<typeof packageSchema>;

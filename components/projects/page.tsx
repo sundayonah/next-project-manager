@@ -36,8 +36,6 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
       null
    );
 
-   // console.log(packages, 'packages');
-
    const handleProjectDelete = async (id: string) => {
       const confirmed = confirm(
          'Are you sure you want to delete this project?'
@@ -194,7 +192,7 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
                                  {p.description && p.description.length > 100
                                     ? `${p.description.slice(0, 150)}...`
                                     : p.description ||
-                                      'No description available'}
+                                    'No description available'}
                               </p>
                            </div>
                         </Link>
@@ -230,25 +228,25 @@ const Projects = ({ projects, packages }: ProjectsPackagesProps) => {
                   ) : (
                      packageList.map((p) => (
                         <div key={p.id} className="mb-6 group">
-                           <Link href={p.link || '#'} className="block">
+                           <Link href={p.package_data.link || '#'} className="block">
                               <div className="rounded-lg space-y-6 transition-transform duration-300 group-hover:scale-[1.02]">
                                  <p className="text-[#27272a] dark:text-[#d6d6d9] text-2xl font-bold mt-3 transition-colors duration-300 group-hover:text-[#046af8]">
-                                    {p.name}
+                                    {p.package_data.name}
                                  </p>
                                  <p className="text-[#9898a0] transition-colors duration-300 group-hover:text-[#555] dark:group-hover:text-[#bbbbbb]">
-                                    {p.description && p.description.length > 100
-                                       ? `${p.description.slice(0, 100)}...`
-                                       : p.description ||
-                                         'No description available'}
+                                    {p.package_data.description && p.package_data.description.length > 100
+                                       ? `${p.package_data.description.slice(0, 100)}...`
+                                       : p.package_data.description ||
+                                       'No description available'}
                                  </p>
                               </div>
                            </Link>
                            {/* display the stacks */}
                            <div className="my-4">
-                              {p.stacks.length > 0 ? (
+                              {p.package_data.stacks.length > 0 ? (
                                  <p className="text-sm text-gray-600 dark:text-gray-400">
                                     Stacks:{' '}
-                                    {p.stacks.map((s, index) => (
+                                    {p.package_data.stacks.map((s, index) => (
                                        <span
                                           key={index}
                                           className="bg-blue-100 text-blue-800 text-xs font-medium mr-1 px-2.5 py-0.5 rounded"

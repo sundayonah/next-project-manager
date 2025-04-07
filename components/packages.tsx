@@ -49,7 +49,6 @@ const CreatePackageForm: React.FC = () => {
             stacks: data.stacks || '',
          };
 
-         // console.log(formData, 'form data');
          await createPackage(packageData);
          console.log('Project created successfully!'); // Log success
       } catch (error) {
